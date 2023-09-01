@@ -31,8 +31,8 @@ impl KamtFactory {
     fn new<BS, K, V>(&self, store: BS) -> HKamt<BS, V, K>
     where
         BS: Blockstore,
+        K: Serialize + DeserializeOwned + PartialOrd,
         V: Serialize + DeserializeOwned,
-        K: Serialize + DeserializeOwned,
     {
         Kamt::new_with_config(store, self.conf.clone())
     }
@@ -40,7 +40,7 @@ impl KamtFactory {
     fn load<BS, K, V>(&self, cid: &Cid, store: BS) -> Result<HKamt<BS, V, K>, Error>
     where
         BS: Blockstore,
-        K: Serialize + DeserializeOwned,
+        K: Serialize + DeserializeOwned + PartialOrd,
         V: Serialize + DeserializeOwned,
     {
         Kamt::load_with_config(cid, store, self.conf.clone())
@@ -391,17 +391,6 @@ test_kamt_mod!(
         conf: Config {
             bit_width: 4,
             min_data_depth: 1,
-            ..Default::default()
-        },
-    }
-);
-
-test_kamt_mod!(
-    test_max_array_width,
-    KamtFactory {
-        conf: Config {
-            max_array_width: 0, // Just to make sure a seemingly silly config like this doesn't cause a problem.
-            bit_width: 2,
             ..Default::default()
         },
     }

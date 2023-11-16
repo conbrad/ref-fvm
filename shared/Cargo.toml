@@ -41,6 +41,7 @@ rand_chacha = "0.3"
 serde_json = "1.0.99"
 multihash = { workspace = true, features = ["multihash-impl", "sha2", "sha3", "ripemd"] }
 quickcheck_macros = "1"
+coverage-helper = "0.2"
 
 fvm_shared = { path = ".", features = ["arb"] }
 
